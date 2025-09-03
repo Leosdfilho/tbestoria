@@ -1,137 +1,404 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { BookOpen, Factory, Users, Hammer, Timeline, Landmark, GraduationCap, ShieldCheck } from "lucide-react";
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movimento Operário no Brasil — História, lutas e conquistas</title>
+  <meta name="description" content="Site educativo em HTML, CSS e JS sobre o movimento operário no Brasil: origens, greves históricas, organizações, leis trabalhistas e desafios atuais." />
+  <style>
+    :root {
+      --bg: #0b0c10;
+      --panel: #111218;
+      --text: #edf2f7;
+      --muted: #cbd5e1;
+      --brand: #22d3ee;   /* ciano */
+      --accent: #f59e0b;  /* âmbar */
+      --ok: #34d399;
+      --danger: #ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius-lg: 18px;
+      --radius-sm: 10px;
+    }
+    [data-theme="light"]{
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #334155;
+      --brand: #0ea5e9;
+      --accent: #b45309;
+      --shadow: 0 10px 30px rgba(2,6,23,.12);
+    }
 
-// Versão simplificada: compatível com deploy direto no Vercel (sem dependência de shadcn/ui)
+    /* Reset básico */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(34,211,238,.15), transparent),
+                  radial-gradient(1000px 500px at -10% 10%, rgba(245,158,11,.12), transparent),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.65;
+      scroll-behavior: smooth;
+    }
 
-const Section = ({ id, title, icon: Icon, children }) => (
-  <section id={id} className="py-16 scroll-mt-24">
-    <div className="max-w-6xl mx-auto px-4">
-      <motion.h2
-        className="flex items-center gap-3 text-3xl md:text-4xl font-bold mb-6"
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
-      >
-        {Icon && <Icon className="w-8 h-8" />} {title}
-      </motion.h2>
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        viewport={{ once: true }}
-      >
-        {children}
-      </motion.div>
+    /* Topbar */
+    header.topbar{
+      position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
+      background: color-mix(in oklab, var(--bg) 70%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--text) 10%, transparent);
+    }
+    .wrap{max-width:1100px;margin-inline:auto;padding:14px 20px}
+    nav{
+      display:flex;align-items:center;gap:10px;justify-content:space-between;
+    }
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+    .badge{background:linear-gradient(135deg,var(--brand),#60a5fa); color:#00111a; font-weight:700; padding:6px 10px; border-radius:10px;}
+    .brand h1{font-size:18px;margin:0;letter-spacing:.3px}
+    .links{display:flex;gap:10px;flex-wrap:wrap}
+    .links a{color:var(--text);text-decoration:none;padding:8px 12px;border-radius:12px}
+    .links a:hover{background: color-mix(in oklab, var(--text) 10%, transparent)}
+    .controls{display:flex;align-items:center;gap:8px}
+    .btn{cursor:pointer;border:none;border-radius:14px;padding:8px 12px;font-weight:600}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid color-mix(in oklab, var(--text) 15%, transparent)}
+    .btn-primary{background:var(--brand);color:#00212a;box-shadow: var(--shadow)}
+
+    /* Hero */
+    .hero{padding:60px 20px 30px}
+    .hero h2{font-size: clamp(28px, 4vw, 44px); line-height:1.15; margin:0 0 10px}
+    .hero p{max-width:800px;color:var(--muted);margin:8px 0 22px}
+    .grid{display:grid; gap:18px}
+    .grid.cols-3{grid-template-columns: repeat(auto-fit,minmax(240px,1fr))}
+
+    .card{background: color-mix(in oklab, var(--panel) 100%, transparent); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius: var(--radius-lg); padding:18px; box-shadow: var(--shadow)}
+    .card h3{margin:0 0 8px;font-size:18px}
+    .kpi{display:flex;align-items:center;gap:10px;font-weight:700}
+    .kpi small{display:block;color:var(--muted);font-weight:600}
+
+    /* Seções */
+    section{padding:30px 20px}
+    section h2{margin:0 0 8px;font-size: clamp(22px, 3.3vw, 32px)}
+    section p.lead{color:var(--muted);margin:0 0 18px}
+
+    /* Linha do tempo */
+    .timeline{display:grid; gap:14px}
+    .timeline-controls{display:flex; gap:12px; align-items:center; flex-wrap:wrap; background: color-mix(in oklab, var(--panel) 80%, transparent); border:1px solid color-mix(in oklab, var(--text) 10%, transparent); border-radius:var(--radius-lg); padding:12px}
+    .timeline-controls label{font-weight:700}
+    input[type="range"]{width:220px}
+    .events{display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px}
+    .event{border-left:4px solid var(--brand); padding:12px 12px 12px 14px; background: color-mix(in oklab, var(--panel) 90%, transparent); border-radius: var(--radius-sm)}
+    .event h4{margin:0 0 6px; font-size:16px}
+    .event .meta{color:var(--muted); font-size:14px}
+
+    /* Listas em cartões */
+    .cards{display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px}
+    .tag{display:inline-block; padding:4px 8px; border-radius:999px; background: color-mix(in oklab, var(--brand) 25%, transparent); color: color-mix(in oklab, var(--brand) 90%, white); font-weight:700; font-size:12px}
+
+    /* Tabela responsiva */
+    .table-wrap{overflow:auto; border-radius:var(--radius-lg); border:1px solid color-mix(in oklab, var(--text) 10%, transparent)}
+    table{width:100%; border-collapse: collapse; min-width: 560px; background: var(--panel)}
+    th,td{padding:12px 10px; border-bottom:1px solid color-mix(in oklab, var(--text) 10%, transparent); text-align:left}
+    th{background: color-mix(in oklab, var(--panel) 80%, transparent)}
+
+    /* Rodapé */
+    footer{padding:40px 20px 60px; color:var(--muted)}
+    .foot{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+
+    /* Indicador de progresso de leitura */
+    .progress{position:fixed; left:0; top:0; height:3px; background:linear-gradient(90deg,var(--brand),#60a5fa); width:0; z-index:60}
+
+    /* Utilitários */
+    .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+    .muted{color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="topbar" role="banner">
+    <div class="wrap">
+      <nav aria-label="principal">
+        <a class="brand" href="#inicio">
+          <span class="badge" aria-hidden="true">Trabalho</span>
+          <h1>Movimento Operário no Brasil</h1>
+        </a>
+        <div class="links" role="navigation">
+          <a href="#origens">Origens</a>
+          <a href="#linha-do-tempo">Linha do tempo</a>
+          <a href="#greves">Greves</a>
+          <a href="#organizacoes">Organizações</a>
+          <a href="#leis">Leis</a>
+          <a href="#desafios">Hoje</a>
+        </div>
+        <div class="controls">
+          <button class="btn btn-ghost" id="toggleTheme" aria-pressed="false" aria-label="Alternar tema">🌗 Tema</button>
+          <a class="btn btn-primary" href="#referencias">Referências</a>
+        </div>
+      </nav>
     </div>
-  </section>
-);
+  </header>
 
-const Pill = ({ children }) => (
-  <span className="inline-flex items-center rounded-2xl px-3 py-1 text-sm bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">{children}</span>
-);
+  <main id="inicio">
+    <section class="hero wrap" aria-labelledby="titulo">
+      <h2 id="titulo">História, lutas e conquistas da classe trabalhadora</h2>
+      <p>Este site apresenta, de forma didática e interativa, os principais marcos do movimento operário no Brasil — das primeiras associações urbanas no final do século XIX às pautas contemporâneas relacionadas a direitos, tecnologia e novas formas de trabalho.</p>
+      <div class="grid cols-3" aria-label="resumo">
+        <article class="card">
+          <div class="kpi">📅 <div><div>Final do séc. XIX → atualidade</div><small>Da industrialização às plataformas digitais</small></div></div>
+        </article>
+        <article class="card">
+          <div class="kpi">✊ <div><div>Greves históricas</div><small>1917, 1978–1980, 2017 e outras</small></div></div>
+        </article>
+        <article class="card">
+          <div class="kpi">⚖️ <div><div>Conquistas legais</div><small>CLT (1943), CF/88, seguridade social</small></div></div>
+        </article>
+      </div>
+    </section>
 
-const TimelineItem = ({ year, title, text }) => (
-  <li className="relative pl-6 pb-10">
-    <span className="absolute left-0 top-1.5 w-3 h-3 rounded-full bg-emerald-500"></span>
-    <div className="text-sm text-neutral-500">{year}</div>
-    <div className="text-lg font-semibold">{title}</div>
-    <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">{text}</p>
-  </li>
-);
+    <section class="wrap" id="origens" aria-labelledby="origens-titulo">
+      <h2 id="origens-titulo">Origens e contexto</h2>
+      <p class="lead">O movimento operário brasileiro surge com a urbanização e a industrialização, reunindo imigrantes e trabalhadores nacionais em associações, ligas e sindicatos. Influências anarquistas, socialistas e católicas moldaram suas estratégias no início do século XX.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Finais do século XIX</h3>
+          <p>Clubes de ofício e sociedades de socorro mútuo oferecem apoio a trabalhadores em centros como Rio de Janeiro, São Paulo, Santos e Porto Alegre.</p>
+        </article>
+        <article class="card">
+          <h3>Primeiras greves gerais</h3>
+          <p>Destaque para a Greve Geral de 1917 em São Paulo, com forte participação de operários têxteis, metalúrgicos e gráficos, influenciada por ideias libertárias.</p>
+        </article>
+        <article class="card">
+          <h3>Estado e regulação do trabalho</h3>
+          <p>Nos anos 1930–40, o Estado cria uma legislação trabalhista abrangente e passa a reconhecer sindicatos, ao mesmo tempo em que regula sua atuação.</p>
+        </article>
+      </div>
+    </section>
 
-const Card = ({ children }) => (
-  <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow p-5">{children}</div>
-);
-
-export default function MovimentoOperarioBrasil() {
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-neutral-50 dark:from-neutral-900 dark:to-neutral-950 text-neutral-900 dark:text-neutral-50">
-      {/* Navbar */}
-      <header className="sticky top-0 z-40 border-b border-neutral-200/60 dark:border-neutral-800/60 backdrop-blur bg-white/70 dark:bg-neutral-900/70">
-        <nav className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <a href="#inicio" className="font-bold text-xl flex items-center gap-2">
-            <Factory className="w-6 h-6" /> Movimento Operário no Brasil
-          </a>
-          <div className="hidden md:flex gap-4 text-sm">
-            <a href="#introducao" className="hover:underline">Introdução</a>
-            <a href="#linha-do-tempo" className="hover:underline">Linha do tempo</a>
-            <a href="#greves" className="hover:underline">Greves & Conquistas</a>
-            <a href="#conceitos" className="hover:underline">Conceitos</a>
-            <a href="#fontes" className="hover:underline">Leitura</a>
-          </div>
-        </nav>
-      </header>
-
-      {/* Hero */}
-      <section id="inicio" className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-8 items-center">
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
-              Trabalho, organização e luta: <span className="text-emerald-600">o movimento operário brasileiro</span>
-            </h1>
-            <p className="mt-4 text-lg text-neutral-700 dark:text-neutral-300">
-              Um panorama didático das origens, principais mobilizações e impactos sociais e legais do movimento dos trabalhadores no Brasil do final do século XIX aos dias atuais.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              <Pill>Industrialização</Pill>
-              <Pill>Associações & Sindicatos</Pill>
-              <Pill>Direitos Trabalhistas</Pill>
-              <Pill>Greves Históricas</Pill>
-            </div>
-          </motion.div>
-          <motion.div
-            className="relative"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <Card>
-              <h3 className="text-xl font-bold flex items-center gap-2 mb-2"><Users className="w-5 h-5"/> Por que estudar?</h3>
-              <p className="mb-4 text-neutral-700 dark:text-neutral-300">
-                Compreender o movimento operário ajuda a explicar conquistas como jornada de trabalho, salário mínimo, férias e segurança no trabalho, além de mostrar como a participação coletiva transforma a sociedade.
-              </p>
-              <div className="grid grid-cols-3 gap-3 text-center">
-                <div className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800">
-                  <Hammer className="mx-auto"/>
-                  <div className="text-sm mt-1">Organização</div>
-                </div>
-                <div className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800">
-                  <Landmark className="mx-auto"/>
-                  <div className="text-sm mt-1">Leis</div>
-                </div>
-                <div className="p-3 rounded-xl border border-neutral-200 dark:border-neutral-800">
-                  <ShieldCheck className="mx-auto"/>
-                  <div className="text-sm mt-1">Proteção</div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
+    <section class="wrap" id="linha-do-tempo" aria-labelledby="timeline-titulo">
+      <h2 id="timeline-titulo">Linha do tempo interativa</h2>
+      <p class="lead">Ajuste o período para ver eventos relevantes. Use a busca para filtrar por palavras (ex.: "anarquismo", "ABC", "CLT").</p>
+      <div class="timeline">
+        <div class="timeline-controls" role="group" aria-label="controles da linha do tempo">
+          <label for="ano">Ano:</label>
+          <input type="range" id="ano" min="1880" max="2025" value="1980" step="5" />
+          <output id="anoOut" for="ano" aria-live="polite">1980</output>
+          <label class="sr-only" for="busca">Buscar eventos</label>
+          <input id="busca" type="search" placeholder="Buscar eventos..." aria-label="Buscar eventos" />
+          <button class="btn btn-ghost" id="limpar">Limpar</button>
         </div>
-      </section>
+        <div class="events" id="eventos" aria-live="polite"></div>
+      </div>
+    </section>
 
-      <Section id="introducao" title="Introdução" icon={BookOpen}>
-        <div className="prose dark:prose-invert max-w-none">
-          <p>
-            O movimento operário no Brasil surge com a expansão da <strong>industrialização</strong> no final do século XIX e início do XX, reunindo trabalhadores de diversos setores em <strong>associações, ligas e sindicatos</strong>. Ao longo do tempo, sofreu repressões, construiu alianças e obteve conquistas que moldaram o mercado de trabalho e a <strong>cidadania social</strong> no país.
-          </p>
-        </div>
-      </Section>
+    <section class="wrap" id="greves" aria-labelledby="greves-titulo">
+      <h2 id="greves-titulo">Greves e mobilizações marcantes</h2>
+      <p class="lead">Alguns movimentos que alteraram rumos políticos e consolidaram direitos.</p>
+      <div class="cards" id="lista-greves"></div>
+    </section>
 
-      <Section id="linha-do-tempo" title="Linha do tempo essencial" icon={Timeline}>
-        <ol className="relative border-s border-neutral-200 dark:border-neutral-800 ml-2">
-          <TimelineItem year="Fim do séc. XIX" title="Origens urbanas e industriais" text="Oficinas, portos e fábricas concentram trabalhadores; surgem as primeiras associações de auxílio mútuo e greves setoriais." />
-          <TimelineItem year="1917" title="Greve Geral" text="Mobilização em São Paulo se espalha para outras cidades; reivindicações por jornada e melhores salários ganham força nacional." />
-          <TimelineItem year="1930–1943" title="Era Vargas e CLT" text="Estado reorganiza relações de trabalho, cria Justiça do Trabalho e consolida direitos na CLT (1943)." />
-          <TimelineItem year="1964–1985" title="Ditadura e resistência" text="Intervenções em sindicatos e repressão; greves do ABC no fim dos anos 1970 rearticulam o movimento." />
-          <TimelineItem year="1988" title="Constituição Cidadã" text="Amplia direitos sociais e liberdade sindical; fortalece negociação coletiva." />
-          <TimelineItem year="1990–presente" title="Reestruturação e desafios" text="Terceirização, informalidade e economia de plataformas colocam novos temas para a ação coletiva." />
-        </ol>
-      </Section>
+    <section class="wrap" id="organizacoes" aria-labelledby="org-titulo">
+      <h2 id="org-titulo">Organizações operárias e sindicais</h2>
+      <p class="lead">De federações e confederações da Primeira República às centrais sindicais contemporâneas.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Organização</th>
+              <th>Período</th>
+              <th>Características</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>COB — Confederação Operária Brasileira</td>
+              <td>1908–1930</td>
+              <td>Influência anarquista; jornais operários; congressos e greves gerais.</td>
+            </tr>
+            <tr>
+              <td>MTIC / Ministério do Trabalho</td>
+              <td>1930–</td>
+              <td>Estatuto sindical, carteira de trabalho e mediação Estado–sindicatos.</td>
+            </tr>
+            <tr>
+              <td>CGT (1962)</td>
+              <td>1962–1964</td>
+              <td>Articulação sindical pré-1964; cassado após o golpe.</td>
+            </tr>
+            <tr>
+              <td>Novas oposições sindicais</td>
+              <td>1970s</td>
+              <td>Metalúrgicos do ABC e outras categorias reconstroem organização no ciclo de greves.</td>
+            </tr>
+            <tr>
+              <td>CUT — Central Única dos Trabalhadores</td>
+              <td>1983–</td>
+              <td>Central sindical de grande capilaridade, surgida na redemocratização.</td>
+            </tr>
+            <tr>
+              <td>Força Sindical, UGT, CTB, NCST, CSB</td>
+              <td>1990s–</td>
+              <td>Outras centrais com diferentes linhas de atuação e base social.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-      <Section id="greves" title="Greves & conquistas" icon={Hammer}>
-        <div className="grid md:grid-cols-3 gap-6">
-          <Card>
-            <h3 className="font-bold mb-2">Greve Geral de 1917</h3>
-            <p>Marco nacional das lutas operárias, com pautas por redução de
+    <section class="wrap" id="leis" aria-labelledby="leis-titulo">
+      <h2 id="leis-titulo">Leis e direitos trabalhistas</h2>
+      <p class="lead">Marcos legais que impactaram a vida dos trabalhadores.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>CLT — Consolidação das Leis do Trabalho (1943)</h3>
+          <p>Sistematiza direitos como férias remuneradas, regulamentação da jornada e carteira de trabalho.</p>
+          <span class="tag">1943</span>
+        </article>
+        <article class="card">
+          <h3>Constituição Federal de 1988</h3>
+          <p>Amplia liberdades sindicais, direito de greve, seguro-desemprego, FGTS e proteção social.</p>
+          <span class="tag">1988</span>
+        </article>
+        <article class="card">
+          <h3>Reformas e debates recentes</h3>
+          <p>Transformações nas relações de trabalho, terceirização e trabalho por aplicativo abrem novos desafios para a organização coletiva.</p>
+          <span class="tag">2000s–</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="desafios" aria-labelledby="desafios-titulo">
+      <h2 id="desafios-titulo">Desafios contemporâneos</h2>
+      <p class="lead">Automação, plataformas digitais, informalidade e novas formas de representação colocam questões ao movimento operário no século XXI.</p>
+      <div class="cards">
+        <article class="card">
+          <h3>Tecnologia e trabalho</h3>
+          <p>Produtividade cresce com automação, mas exige atualização de qualificações e proteção a trabalhadores deslocados.</p>
+        </article>
+        <article class="card">
+          <h3>Plataformização</h3>
+          <p>Entregadores e motoristas de app suscitam disputas por reconhecimento de vínculo, segurança e remuneração justa.</p>
+        </article>
+        <article class="card">
+          <h3>Representação e negociação</h3>
+          <p>Fortalecer negociações coletivas, participação feminina e juvenil e combater a informalidade são pautas centrais.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap" id="referencias" aria-labelledby="ref-titulo">
+      <h2 id="ref-titulo">Referências para estudar mais</h2>
+      <p class="lead">Sugestões de leitura e pesquisa (livros, artigos, documentos e acervos digitais). Substitua/complete com as fontes que sua escola/projeto indicar.</p>
+      <ul>
+        <li>Histórias das greves de 1917 e 1979–1980 (acervos digitais universitários e instituições de memória).</li>
+        <li>Documentos oficiais sobre CLT (1943) e Constituição de 1988.</li>
+        <li>Pesquisas do DIEESE e do IBGE sobre mercado de trabalho.</li>
+        <li>Biografias de lideranças sindicais e coletâneas de jornais operários do início do século XX.</li>
+      </ul>
+      <p class="muted">Observação: Este site tem fins didáticos e de divulgação. Verifique versões atualizadas das leis e estatísticas.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <strong>Movimento Operário no Brasil</strong><br>
+        <span class="muted">Site educativo em HTML, CSS e JS • © 2025</span>
+      </div>
+      <div>
+        <button class="btn btn-ghost" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️ Voltar ao topo</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ===== Tema claro/escuro =====
+    const root = document.documentElement;
+    const toggle = document.getElementById('toggleTheme');
+    const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    root.setAttribute('data-theme', savedTheme);
+    toggle.setAttribute('aria-pressed', savedTheme === 'light');
+    toggle.addEventListener('click', () => {
+      const current = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', current);
+      localStorage.setItem('theme', current);
+      toggle.setAttribute('aria-pressed', current === 'light');
+    });
+
+    // ===== Indicador de progresso =====
+    const progress = document.querySelector('.progress');
+    document.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
+      progress.style.width = (scrolled * 100) + '%';
+    });
+
+    // ===== Dados da linha do tempo =====
+    const DATA = [
+      { ano: 1888, titulo: 'Abolição da escravidão', tag: 'transição do trabalho', texto: 'Nova dinâmica do trabalho livre e migrações internas.' },
+      { ano: 1890, titulo: 'Sociedades de socorro mútuo', tag: 'associativismo', texto: 'Base para sindicatos e jornais operários.' },
+      { ano: 1908, titulo: 'Fundação da COB', tag: 'anarquismo', texto: 'Confederação Operária Brasileira promove congressos e greves.' },
+      { ano: 1917, titulo: 'Greve Geral de 1917', tag: 'greve geral', texto: 'São Paulo e outras cidades; pautas por salários e jornada.' },
+      { ano: 1930, titulo: 'Criação do Ministério do Trabalho', tag: 'Estado', texto: 'Início da regulação estatal e reconhecimento sindical.' },
+      { ano: 1943, titulo: 'CLT promulgada', tag: 'direitos', texto: 'Consolida normas trabalhistas e carteira profissional.' },
+      { ano: 1964, titulo: 'Golpe civil-militar', tag: 'repressão', texto: 'Intervenção em sindicatos e cassações.' },
+      { ano: 1978, titulo: 'Ciclo de greves no ABC', tag: 'reconstrução', texto: 'Metalúrgicos retomam lutas salariais e organizativas.' },
+      { ano: 1983, titulo: 'Criação da CUT', tag: 'central sindical', texto: 'Nasce a Central Única dos Trabalhadores.' },
+      { ano: 1988, titulo: 'Constituição Cidadã', tag: 'CF/88', texto: 'Amplia direitos sociais e liberdade sindical.' },
+      { ano: 2017, titulo: 'Greve geral de 2017', tag: 'greve geral', texto: 'Mobilização nacional contra mudanças trabalhistas.' },
+      { ano: 2020, titulo: 'Pandemia e trabalho essencial', tag: 'crise', texto: 'Desafios de saúde, renda e proteção social.' },
+      { ano: 2023, titulo: 'Debate sobre trabalho por aplicativo', tag: 'plataformas', texto: 'Demandas por proteção, remuneração e negociação.' },
+    ];
+
+    // ===== Renderização da linha do tempo =====
+    const $ano = document.getElementById('ano');
+    const $anoOut = document.getElementById('anoOut');
+    const $busca = document.getElementById('busca');
+    const $limpar = document.getElementById('limpar');
+    const $eventos = document.getElementById('eventos');
+
+    function renderTimeline(){
+      const anoMax = parseInt($ano.value, 10);
+      const q = $busca.value.trim().toLowerCase();
+      $anoOut.textContent = String(anoMax);
+      const filtrados = DATA.filter(ev => ev.ano <= anoMax && (!q || (ev.titulo+ev.tag+ev.texto).toLowerCase().includes(q)));
+      $eventos.innerHTML = '';
+      if(!filtrados.length){
+        $eventos.innerHTML = `<div class="event"><h4>Nenhum evento encontrado</h4><p class="meta">Ajuste o ano ou a busca.</p></div>`;
+        return;
+      }
+      for(const ev of filtrados){
+        const el = document.createElement('article');
+        el.className = 'event';
+        el.innerHTML = `<h4>${ev.ano} — ${ev.titulo}</h4><p class="meta">${ev.tag}</p><p>${ev.texto}</p>`;
+        $eventos.appendChild(el);
+      }
+    }
+    $ano.addEventListener('input', renderTimeline);
+    $busca.addEventListener('input', renderTimeline);
+    $limpar.addEventListener('click', ()=>{ $busca.value=''; renderTimeline(); });
+    renderTimeline();
+
+    // ===== Greves marcantes =====
+    const GREVES = [
+      { titulo: 'Greve Geral de 1917', onde: 'São Paulo (espalhou-se pelo país)', pautas: ['Aumento salarial','Redução da jornada','Melhores condições'], impacto: 'Marco da organização operária urbana.' },
+      { titulo: 'Greves do ABC (1978–1980)', onde: 'Região do ABC Paulista', pautas: ['Reposição salarial','Autonomia sindical'], impacto: 'Reanimam o sindicalismo e influenciam a redemocratização.' },
+      { titulo: 'Greve dos professores (diversas datas)', onde: 'Vários estados e municípios', pautas: ['Piso, carreira, condições'], impacto: 'Estrutura agendas de educação e financiamento.' },
+      { titulo: 'Greve geral de 2017', onde: 'Âmbito nacional', pautas: ['Direitos e previdência'], impacto: 'Recoloca tema do trabalho no debate público.' },
+    ];
+    const $greves = document.getElementById('lista-greves');
+    function renderGreves(){
+      $greves.innerHTML = '';
+      for(const g of GREVES){
+        const el = document.createElement('article');
+        el.className = 'card';
+        el.innerHTML = `<h3>${g.titulo}</h3>
+          <p><strong>Onde:</strong> ${g.onde}</p>
+          <p><strong>Pautas:</strong> ${g.pautas.join(', ')}</p>
+          <p><strong>Impacto:</strong> ${g.impacto}</p>`;
+        $greves.appendChild(el);
+      }
+    }
+    renderGreves();
+  </script>
+</body>
+</html>
