@@ -6,19 +6,20 @@
   <title>Movimento Operário no Brasil — História, lutas e conquistas</title>
   <meta name="description" content="Site educativo em HTML, CSS e JS sobre o movimento operário no Brasil: origens, greves históricas, organizações, leis trabalhistas e desafios atuais." />
   <style>
-    :root {
-      --bg: #0b0c10;
-      --panel: #111218;
-      --text: #edf2f7;
-      --muted: #cbd5e1;
-      --brand: #22d3ee;   /* ciano */
-      --accent: #f59e0b;  /* âmbar */
-      --ok: #34d399;
-      --danger: #ef4444;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius-lg: 18px;
-      --radius-sm: 10px;
-    }
+:root {
+--bg: #0b0c10;
+--panel: #111218;
+--text: #edf2f7;
+--brand: #22d3ee;
+}
+body {
+margin:0; font-family: Arial, sans-serif; background: var(--bg); color: var(--text); line-height:1.8;
+font-size: 22px;
+padding: 30px 20px; max-width: 1000px; margin: auto;
+}
+h1,h2 {color: var(--brand); margin-top: 40px;}
+ul {margin: 20px 0; padding-left: 25px}
+li {margin-bottom: 15px}
     [data-theme="light"]{
       --bg: #f8fafc;
       --panel: #ffffff;
@@ -32,16 +33,6 @@
     /* Reset básico */
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1200px 600px at 70% -10%, rgba(34,211,238,.15), transparent),
-                  radial-gradient(1000px 500px at -10% 10%, rgba(245,158,11,.12), transparent),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.65;
-      scroll-behavior: smooth;
-    }
-
     /* Topbar */
     header.topbar{
       position: sticky; top:0; z-index: 50; backdrop-filter: blur(8px);
@@ -138,166 +129,84 @@
     </div>
   </header>
 
-  <main id="inicio">
-    <section class="hero wrap" aria-labelledby="titulo">
-      <h2 id="titulo">História, lutas e conquistas da classe trabalhadora</h2>
-      <p>Este site apresenta, de forma didática e interativa, os principais marcos do movimento operário no Brasil — das primeiras associações urbanas no final do século XIX às pautas contemporâneas relacionadas a direitos, tecnologia e novas formas de trabalho.</p>
-      <div class="grid cols-3" aria-label="resumo">
-        <article class="card">
-          <div class="kpi">📅 <div><div>Final do séc. XIX → atualidade</div><small>Da industrialização às plataformas digitais</small></div></div>
-        </article>
-        <article class="card">
-          <div class="kpi">✊ <div><div>Greves históricas</div><small>1917, 1978–1980, 2017 e outras</small></div></div>
-        </article>
-        <article class="card">
-          <div class="kpi">⚖️ <div><div>Conquistas legais</div><small>CLT (1943), CF/88, seguridade social</small></div></div>
-        </article>
-      </div>
-    </section>
+<h1>Movimento Operário no Brasil</h1>
+<ul>
+<li><strong>História, lutas e conquistas da classe trabalhadora.</strong></li>
+</ul>
 
-    <section class="wrap" id="origens" aria-labelledby="origens-titulo">
-      <h2 id="origens-titulo">Origens e contexto</h2>
-      <p class="lead">O movimento operário brasileiro surge com a urbanização e a industrialização, reunindo imigrantes e trabalhadores nacionais em associações, ligas e sindicatos. Influências anarquistas, socialistas e católicas moldaram suas estratégias no início do século XX.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Finais do século XIX</h3>
-          <p>Clubes de ofício e sociedades de socorro mútuo oferecem apoio a trabalhadores em centros como Rio de Janeiro, São Paulo, Santos e Porto Alegre.</p>
-        </article>
-        <article class="card">
-          <h3>Primeiras greves gerais</h3>
-          <p>Destaque para a Greve Geral de 1917 em São Paulo, com forte participação de operários têxteis, metalúrgicos e gráficos, influenciada por ideias libertárias.</p>
-        </article>
-        <article class="card">
-          <h3>Estado e regulação do trabalho</h3>
-          <p>Nos anos 1930–40, o Estado cria uma legislação trabalhista abrangente e passa a reconhecer sindicatos, ao mesmo tempo em que regula sua atuação.</p>
-        </article>
-      </div>
-    </section>
 
-    <section class="wrap" id="linha-do-tempo" aria-labelledby="timeline-titulo">
-      <h2 id="timeline-titulo">Linha do tempo interativa</h2>
-      <p class="lead">Ajuste o período para ver eventos relevantes. Use a busca para filtrar por palavras (ex.: "anarquismo", "ABC", "CLT").</p>
-      <div class="timeline">
-        <div class="timeline-controls" role="group" aria-label="controles da linha do tempo">
-          <label for="ano">Ano:</label>
-          <input type="range" id="ano" min="1880" max="2025" value="1980" step="5" />
-          <output id="anoOut" for="ano" aria-live="polite">1980</output>
-          <label class="sr-only" for="busca">Buscar eventos</label>
-          <input id="busca" type="search" placeholder="Buscar eventos..." aria-label="Buscar eventos" />
-          <button class="btn btn-ghost" id="limpar">Limpar</button>
-        </div>
-        <div class="events" id="eventos" aria-live="polite"></div>
-      </div>
-    </section>
+<h2>Origens e contexto</h2>
+<ul>
+<li>O movimento operário brasileiro surge com a urbanização e a industrialização.</li>
+<li>Reunião de imigrantes e trabalhadores nacionais em associações, ligas e sindicatos.</li>
+<li>Influências anarquistas, socialistas e católicas moldaram suas estratégias.</li>
+<li>Clubes de ofício e sociedades de socorro mútuo (final do séc. XIX).</li>
+<li>Greve Geral de 1917 em São Paulo (primeiras greves de grande impacto).</li>
+<li>Anos 1930–40: legislação trabalhista abrangente e reconhecimento sindical.</li>
+</ul>
 
-    <section class="wrap" id="greves" aria-labelledby="greves-titulo">
-      <h2 id="greves-titulo">Greves e mobilizações marcantes</h2>
-      <p class="lead">Alguns movimentos que alteraram rumos políticos e consolidaram direitos.</p>
-      <div class="cards" id="lista-greves"></div>
-    </section>
 
-    <section class="wrap" id="organizacoes" aria-labelledby="org-titulo">
-      <h2 id="org-titulo">Organizações operárias e sindicais</h2>
-      <p class="lead">De federações e confederações da Primeira República às centrais sindicais contemporâneas.</p>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Organização</th>
-              <th>Período</th>
-              <th>Características</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>COB — Confederação Operária Brasileira</td>
-              <td>1908–1930</td>
-              <td>Influência anarquista; jornais operários; congressos e greves gerais.</td>
-            </tr>
-            <tr>
-              <td>MTIC / Ministério do Trabalho</td>
-              <td>1930–</td>
-              <td>Estatuto sindical, carteira de trabalho e mediação Estado–sindicatos.</td>
-            </tr>
-            <tr>
-              <td>CGT (1962)</td>
-              <td>1962–1964</td>
-              <td>Articulação sindical pré-1964; cassado após o golpe.</td>
-            </tr>
-            <tr>
-              <td>Novas oposições sindicais</td>
-              <td>1970s</td>
-              <td>Metalúrgicos do ABC e outras categorias reconstroem organização no ciclo de greves.</td>
-            </tr>
-            <tr>
-              <td>CUT — Central Única dos Trabalhadores</td>
-              <td>1983–</td>
-              <td>Central sindical de grande capilaridade, surgida na redemocratização.</td>
-            </tr>
-            <tr>
-              <td>Força Sindical, UGT, CTB, NCST, CSB</td>
-              <td>1990s–</td>
-              <td>Outras centrais com diferentes linhas de atuação e base social.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
+<h2>Linha do tempo</h2>
+<ul>
+<li>1888 — Abolição da escravidão.</li>
+<li>1890 — Sociedades de socorro mútuo.</li>
+<li>1908 — Fundação da COB.</li>
+<li>1917 — Greve Geral de 1917.</li>
+<li>1930 — Criação do Ministério do Trabalho.</li>
+<li>1943 — CLT promulgada.</li>
+<li>1964 — Golpe civil-militar.</li>
+<li>1978 — Ciclo de greves no ABC.</li>
+<li>1983 — Criação da CUT.</li>
+<li>1988 — Constituição Cidadã.</li>
+<li>2017 — Greve geral de 2017.</li>
+<li>2020 — Pandemia e trabalho essencial.</li>
+<li>2023 — Debate sobre trabalho por aplicativo.</li>
+</ul>
 
-    <section class="wrap" id="leis" aria-labelledby="leis-titulo">
-      <h2 id="leis-titulo">Leis e direitos trabalhistas</h2>
-      <p class="lead">Marcos legais que impactaram a vida dos trabalhadores.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>CLT — Consolidação das Leis do Trabalho (1943)</h3>
-          <p>Sistematiza direitos como férias remuneradas, regulamentação da jornada e carteira de trabalho.</p>
-          <span class="tag">1943</span>
-        </article>
-        <article class="card">
-          <h3>Constituição Federal de 1988</h3>
-          <p>Amplia liberdades sindicais, direito de greve, seguro-desemprego, FGTS e proteção social.</p>
-          <span class="tag">1988</span>
-        </article>
-        <article class="card">
-          <h3>Reformas e debates recentes</h3>
-          <p>Transformações nas relações de trabalho, terceirização e trabalho por aplicativo abrem novos desafios para a organização coletiva.</p>
-          <span class="tag">2000s–</span>
-        </article>
-      </div>
-    </section>
 
-    <section class="wrap" id="desafios" aria-labelledby="desafios-titulo">
-      <h2 id="desafios-titulo">Desafios contemporâneos</h2>
-      <p class="lead">Automação, plataformas digitais, informalidade e novas formas de representação colocam questões ao movimento operário no século XXI.</p>
-      <div class="cards">
-        <article class="card">
-          <h3>Tecnologia e trabalho</h3>
-          <p>Produtividade cresce com automação, mas exige atualização de qualificações e proteção a trabalhadores deslocados.</p>
-        </article>
-        <article class="card">
-          <h3>Plataformização</h3>
-          <p>Entregadores e motoristas de app suscitam disputas por reconhecimento de vínculo, segurança e remuneração justa.</p>
-        </article>
-        <article class="card">
-          <h3>Representação e negociação</h3>
-          <p>Fortalecer negociações coletivas, participação feminina e juvenil e combater a informalidade são pautas centrais.</p>
-        </article>
-      </div>
-    </section>
+<h2>Greves e mobilizações marcantes</h2>
+<ul>
+<li>1917 — aumento salarial, redução da jornada, melhores condições.</li>
+<li>1978–1980 (ABC) — reposição salarial, autonomia sindical.</li>
+<li>Professores (diversas datas) — piso, carreira, condições.</li>
+<li>2017 — direitos e previdência.</li>
+</ul>
 
-    <section class="wrap" id="referencias" aria-labelledby="ref-titulo">
-      <h2 id="ref-titulo">Referências para estudar mais</h2>
-      <p class="lead">Sugestões de leitura e pesquisa (livros, artigos, documentos e acervos digitais). Substitua/complete com as fontes que sua escola/projeto indicar.</p>
-      <ul>
-        <li>Histórias das greves de 1917 e 1979–1980 (acervos digitais universitários e instituições de memória).</li>
-        <li>Documentos oficiais sobre CLT (1943) e Constituição de 1988.</li>
-        <li>Pesquisas do DIEESE e do IBGE sobre mercado de trabalho.</li>
-        <li>Biografias de lideranças sindicais e coletâneas de jornais operários do início do século XX.</li>
-      </ul>
-      <p class="muted">Observação: Este site tem fins didáticos e de divulgação. Verifique versões atualizadas das leis e estatísticas.</p>
-    </section>
-  </main>
 
+<h2>Organizações operárias e sindicais</h2>
+<ul>
+<li>COB (1908–1930) — influência anarquista.</li>
+<li>MTIC / Ministério do Trabalho (1930–).</li>
+<li>CGT (1962–1964).</li>
+<li>Oposições sindicais (1970s).</li>
+<li>CUT (1983–).</li>
+<li>Força Sindical, UGT, CTB, NCST, CSB (1990s–).</li>
+</ul>
+
+
+<h2>Leis e direitos trabalhistas</h2>
+<ul>
+<li>CLT (1943): férias, jornada, carteira de trabalho.</li>
+<li>Constituição Federal (1988): direito de greve, FGTS, proteção social.</li>
+<li>Reformas recentes: terceirização e trabalho por aplicativo.</li>
+</ul>
+
+
+<h2>Desafios contemporâneos</h2>
+<ul>
+<li>Tecnologia e trabalho: exige novas qualificações.</li>
+<li>Plataformização: entregadores e motoristas de app.</li>
+<li>Representação e negociação: fortalecer coletivos e combater a informalidade.</li>
+</ul>
+
+
+<h2>Referências</h2>
+<ul>
+<li>Greves de 1917 e 1979–1980 (acervos digitais).</li>
+<li>CLT (1943) e Constituição de 1988.</li>
+<li>Pesquisas do DIEESE e do IBGE.</li>
+<li>Biografias de lideranças sindicais.</li>
+</ul>
   <footer>
     <div class="wrap foot">
       <div>
